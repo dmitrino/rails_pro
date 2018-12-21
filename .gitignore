@@ -1,2 +1,4 @@
+#
+#specify files that you do not want to add
 
-.vagrant/
+
