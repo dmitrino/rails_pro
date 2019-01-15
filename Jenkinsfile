@@ -1,37 +1,42 @@
 pipeline {
     agent any
+    //triggers {
+        //pollSCM '* * * * *'
+    //}
 
     stages {
+        //stage ('Checkout') {
+            //steps {
+                //echo 'Checkout....'
+                //checkout([$class: 'GitSCM', branches: [[name: '*']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/vecinomio/rails_pro.git']]])
+            //}
+        //}
         stage ('creating vm') {
             steps {
-                echo 'Trying to setup VM.....'
-                
-                // Change to the project dir
-                dir('/Users/imaki/vagrant-projects/rails_pro') {
-                    sh 'berks install'
-                    
-                    // Start freestyle job that create VM using vagrant plugin
-                    build 'work_env'
-                }    
+
+                sh 'berks install'
+
+                // Create VM (when the job will finish VM will be dead!!!)
+                sh 'vagrant up --provision'
             }
         }
         stage ('Build') {
             steps {
                 echo 'Building....'
-            }    
+            }
         }
         stage ('Tests') {
             steps {
                 echo 'Trying some tests'
-            }    
+                sh 'vagrant provision --provision-with rspec'
+            }
         }
         stage ('Deploy') {
             steps {
                 echo 'Deploy something'
-            }    
+            }
         }
 
     }
-
 
 }

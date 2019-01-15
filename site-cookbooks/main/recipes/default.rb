@@ -29,7 +29,9 @@ end
 
 rbenv_global '2.5.1' # Set global ruby
 
-gem_package 'bundler' # Install bundler
+gem_package 'bundler' do # Install bundler
+  version '1.17.3'
+end
 package 'nodejs' # Install nodejs
 package 'sqlite-devel' # Install sqlite3
 gem_package 'rails' do # Install rails 5.2.0
@@ -46,7 +48,7 @@ execute 'bundle_install' do # Do bundle install
   action :run
 end
 
-systemd_unit 'ror.service' do
+systemd_unit 'ror.service' do # Create RoR service to autostart Rails
   content({Unit: {
             Description: 'Run rails',
             Requires: 'network.target',
