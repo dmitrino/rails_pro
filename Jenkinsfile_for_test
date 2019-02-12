@@ -1,0 +1,29 @@
+pipeline {
+    agent { label 'cnt7' }
+
+    stages {
+        stage ('Configure test rails env') {
+            steps {
+                dir('ss_trainee') {
+                    sh 'pwd'
+                    sh 'bundle install'
+                }
+            }
+        }
+        stage ('Run rspec tests') {
+            steps {
+                script{
+                    try {
+                        sh 'pwd'
+                        sh 'cd ~/workspace/work-env-pipe/ss_trainee && bundle exec rspec -f d spec'
+                        currentBuild.result = 'SUCCESS'
+                    }
+                    catch (exc) {
+                        currentBuild.result = 'UNSTABLE'
+                    }
+                echo "result is: ${currentBuild.currentResult}"
+                }
+            }
+        }
+    }
+}

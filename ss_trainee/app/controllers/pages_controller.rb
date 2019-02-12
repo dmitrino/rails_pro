@@ -1,5 +1,6 @@
-class PagesController < ApplicationController
-  def about
+# frozen_string_literal: true
 
-  end
+# New controoler for static pages
+class PagesController < ApplicationController
+  def about; end
 end
